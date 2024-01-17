@@ -12,3 +12,10 @@ export const CustomButton = styled(Button)`
   border-radius: 0;
   color: ${({ theme }) => theme.palette.common.white};
 `;
+
+export const CompanyLogo = styled("img")`
+  max-width: 105px;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+`;

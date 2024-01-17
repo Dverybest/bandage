@@ -1,4 +1,5 @@
 "use client";
+import { aws, hooli, piper_hat, redit, stripe, yft } from "@/assets";
 import { ProductList } from "@/component";
 import { useAppDispatch, useAppSelector, useGetProductByIdQuery } from "@/lib";
 import { addCartItem, addListItem } from "@/lib/slice";
@@ -16,8 +17,10 @@ import {
 import { SyntheticEvent, useState } from "react";
 import { BsCart } from "react-icons/bs";
 import { GrFavorite } from "react-icons/gr";
+import { HiMiniChevronRight } from "react-icons/hi2";
 import { MdFavorite } from "react-icons/md";
 import {
+  CompanyLogo,
   CustomButton,
   CustomIconButton,
   CustomTabPanel,
@@ -49,8 +52,15 @@ export default function ProductDetails({
   return (
     <Box bgcolor={({ palette }) => palette.grey[100]}>
       <Container>
-        <Box my={3}>
-          <Breadcrumbs aria-label="breadcrumb">
+        <Box
+          py={3}
+          display={"flex"}
+          justifyContent={{ xs: "center", sm: "normal" }}
+        >
+          <Breadcrumbs
+            separator={<HiMiniChevronRight />}
+            aria-label="breadcrumb"
+          >
             <Link
               variant={"caption"}
               underline="hover"
@@ -71,11 +81,14 @@ export default function ProductDetails({
           columnGap={"30px"}
         >
           <Box flex={1}>
-            <ProductImageSlider images={product?.images ?? []} />
+            <ProductImageSlider
+              images={product?.images ?? []}
+              title={product?.title ?? ""}
+            />
           </Box>
           <Box flex={1}>
             <Typography color={"text.primary"} variant="h4" fontWeight={400}>
-              {product?.title}
+              {product?.title ?? ""}
             </Typography>
             <Box mt={"12px"} display={"flex"}>
               <Rating name="simple-controlled" value={product?.rating ?? 0} />
@@ -89,7 +102,7 @@ export default function ProductDetails({
               color={"text.primary"}
               variant="h3"
             >
-              ${product?.price}
+              ${product?.price ?? 0}
             </Typography>
             <Box display={"flex"}>
               <Typography color={"text.secondary"} variant="h6">
@@ -206,6 +219,24 @@ export default function ProductDetails({
             bgcolor={({ palette }) => palette.grey[200]}
           />
           <ProductList hideLoadMore />
+        </Box>
+      </Container>
+      <Container>
+        <Box
+          py={"50px"}
+          columnGap={"30px"}
+          rowGap={"60px"}
+          alignItems={"center"}
+          display={"flex"}
+          flexDirection={{ xs: "column", sm: "row" }}
+          justifyContent={"center"}
+        >
+          <CompanyLogo src={hooli.src} alt="hooli logo" />
+          <CompanyLogo src={yft.src} alt="yft logo" />
+          <CompanyLogo src={piper_hat.src} alt="piper_hat logo" />
+          <CompanyLogo src={stripe.src} alt="stripe logo" />
+          <CompanyLogo src={aws.src} alt="aws logo" />
+          <CompanyLogo src={redit.src} alt="redit logo" />
         </Box>
       </Container>
     </Box>
