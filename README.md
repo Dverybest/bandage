@@ -27,4 +27,4 @@ Th tech stack used in the product:
 
 ## Deploy on Vercel
 
-Check out the website [Bandage](https://nextjs.org/docs/deployment) for more details.
+Check out the website [Bandage](https://bandage-1q4q-f9957s7n4-dverybest.vercel.app/) for more details.

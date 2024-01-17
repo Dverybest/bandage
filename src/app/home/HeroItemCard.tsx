@@ -8,7 +8,7 @@ type IProp = {
   numberOfItems: number;
   productName: string;
 } & BoxProps;
-export const BannerItemCard: FC<IProp> = ({
+export const HeroItemCard: FC<IProp> = ({
   imageSrc,
   numberOfItems,
   productName,
@@ -16,20 +16,16 @@ export const BannerItemCard: FC<IProp> = ({
 }) => {
   return (
     <Box display={"flex"} flex={1} {...rest} position={"relative"}>
-      <BannerItemImage src={imageSrc} />
+      <HeroItemImage src={imageSrc} />
       <DetailContainer>
-        <Typography
-          variant="h6"
-          component={"h6"}
-          color={(theme) => theme.palette.success.main}
-        >
+        <Typography variant="h6" component={"h6"} color={"success.main"}>
           {numberOfItems} items
         </Typography>
-        <Typography variant="h2" component={"h2"}>
+        <Typography color={"text.primary"} variant="h2" component={"h2"}>
           {productName}
         </Typography>
         <Link href={""}>
-          <Typography variant="h6" component={"h6"}>
+          <Typography color={"text.primary"} variant="h6" component={"h6"}>
             Read More
           </Typography>
         </Link>
@@ -38,7 +34,7 @@ export const BannerItemCard: FC<IProp> = ({
   );
 };
 
-const BannerItemImage = styled("img")`
+const HeroItemImage = styled("img")`
   object-fit: cover;
   width: 100%;
   height: auto;
@@ -46,4 +42,7 @@ const BannerItemImage = styled("img")`
 const DetailContainer = styled("div")`
   position: absolute;
   padding: 24px;
+  a {
+    text-decoration: none;
+  }
 `;

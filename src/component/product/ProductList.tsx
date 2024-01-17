@@ -2,32 +2,30 @@
 import { useGetProductsQuery } from "@/lib";
 import { useMedia } from "@/utils";
 import { Box, Button } from "@mui/material";
-import { FC, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Loader } from "./Loader";
 import { ProductCard } from "./ProductCard";
 
-export const ProductList: FC<{ hideLoadMore?: boolean }> = ({
-  hideLoadMore,
-}) => {
+export function ProductList({ hideLoadMore }: { hideLoadMore?: boolean }) {
   const { isMobile } = useMedia();
   const limit = useMemo(() => (isMobile ? 5 : 10), [isMobile]);
   const [page, setPage] = useState(0);
   const [products, setProducts] = useState<IProduct[]>([]);
-  const { data: productList, isLoading } = useGetProductsQuery({
+  const { data, isLoading } = useGetProductsQuery({
     limit,
     skip: page * limit,
   });
-  const loadMore = !hideLoadMore && products.length < (productList?.total ?? 0);
+  const loadMore = !hideLoadMore && products.length < (data?.total ?? 0);
   const onLoadMoreClick = () => {
     if (loadMore) {
       setPage((page) => page + 1);
     }
   };
   useEffect(() => {
-    if (productList) {
-      setProducts((products) => [...products, ...productList.products]);
+    if (data) {
+      setProducts((products) => [...products, ...data.products]);
     }
-  }, [productList]);
+  }, [data]);
   return (
     <Box display={"flex"} alignItems={"center"} flexDirection={"column"}>
       <Box
@@ -51,4 +49,4 @@ export const ProductList: FC<{ hideLoadMore?: boolean }> = ({
       )}
     </Box>
   );
-};
+}
