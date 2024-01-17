@@ -1,16 +1,25 @@
 "use client";
 import { useAppSelector } from "@/lib";
-import { Box, Button, IconButton, Link, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Drawer,
+  IconButton,
+  Link,
+  Typography,
+} from "@mui/material";
 import { useState } from "react";
 import { BsCart } from "react-icons/bs";
 import { FiSearch } from "react-icons/fi";
 import { GrFavorite } from "react-icons/gr";
 import { HiMenuAlt3 } from "react-icons/hi";
 import { MdOutlinePerson } from "react-icons/md";
+import { Cart } from "./Cart";
 
 export const NavbarTop = () => {
   const { cartItems } = useAppSelector((state) => state.cart);
   const { list } = useAppSelector((state) => state.wishList);
+  const [showCart, setShowCart] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const totalItemInCart = cartItems.reduce<number>(
     (acc, current) => acc + current.quantity,
@@ -26,27 +35,36 @@ export const NavbarTop = () => {
   ];
 
   return (
-    <Box
-      display={"flex"}
-      paddingX={3}
-      paddingY={"10px"}
-      justifyContent={"space-between"}
-      alignItems={{ xs: "", md: "center" }}
-    >
+    <>
       <Box
         display={"flex"}
+        paddingX={3}
+        paddingY={"10px"}
         justifyContent={"space-between"}
-        flex={1}
-        columnGap={5}
         flexDirection={{ xs: "column", md: "row" }}
-        alignItems={{ xs: "flex-start", md: "center" }}
+        alignItems={{ xs: "", md: "center" }}
+        columnGap={5}
       >
-        <Typography component={"h3"} variant="h3">
-          Bandage
-        </Typography>
+        <Box
+          display={"flex"}
+          justifyContent={"space-between"}
+          flex={{ xs: 1, md: "unset" }}
+        >
+          <Typography component={"h3"} variant="h3">
+            Bandage
+          </Typography>
+          <IconButton
+            onClick={() => setShowMenu((prev) => !prev)}
+            sx={{ display: { md: "none" }, alignItems: "flex-start" }}
+          >
+            <HiMenuAlt3 />
+          </IconButton>
+        </Box>
         <Box
           columnGap={"21px"}
-          // justifyContent={{ xs: "flex-end", md: "space-between" }}
+          rowGap={"20px"}
+          alignSelf={"center"}
+          justifyContent={{ xs: "center", md: "space-between" }}
           alignItems={"center"}
           flexDirection={{ xs: "column", md: "row" }}
           display={{ xs: showMenu ? "flex" : "none", md: "flex" }}
@@ -56,6 +74,7 @@ export const NavbarTop = () => {
             display={"flex"}
             flexDirection={{ xs: "column", md: "row" }}
             columnGap={"21px"}
+            rowGap={"20px"}
           >
             {links.map((link, index) => (
               <Link
@@ -74,30 +93,38 @@ export const NavbarTop = () => {
             justifyContent={"flex-end"}
             alignItems={"center"}
             gap={2}
+            rowGap={"20px"}
             flexDirection={{ xs: "column", md: "row" }}
           >
             <Button>
               <MdOutlinePerson />
               Login / Register
             </Button>
-            <FiSearch />
+            <IconButton>
+              <FiSearch />
+            </IconButton>
             <Box>
-              <BsCart />
+              <IconButton onClick={() => setShowCart((prev) => !prev)}>
+                <BsCart />
+              </IconButton>
               {totalItemInCart}
             </Box>
             <Box>
-              <GrFavorite />
+              <IconButton>
+                <GrFavorite />
+              </IconButton>
               {list.length}
             </Box>
           </Box>
         </Box>
       </Box>
-      <IconButton
-        onClick={() => setShowMenu((prev) => !prev)}
-        sx={{ display: { md: "none" }, alignItems: "flex-start" }}
+      <Drawer
+        anchor={"right"}
+        open={showCart}
+        onClose={() => setShowCart(false)}
       >
-        <HiMenuAlt3 />
-      </IconButton>
-    </Box>
+        {showCart && <Cart setShow={setShowCart} />}
+      </Drawer>
+    </>
   );
 };

@@ -1,6 +1,6 @@
 "use client";
-import { NavbarDark } from "./navbar-dark";
-import { NavbarTop } from "./navbar-top";
+import { NavbarDark } from "./NavbarDark";
+import { NavbarTop } from "./NavbarTop";
 
 export const Navbar = () => {
   return (

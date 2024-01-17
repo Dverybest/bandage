@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { Storage } from "../enum";
 
-type ICartItem = IProduct & { quantity: number };
 const initialState: {
   cartItems: Array<ICartItem>;
 } = { cartItems: [] };
@@ -15,6 +15,7 @@ export const cartSlice = createSlice({
       } else {
         state.cartItems.push({ ...payload, quantity: 1 });
       }
+      localStorage.setItem(Storage.CART, JSON.stringify(state));
       return state;
     },
     removeCartItem: (state, { payload }: PayloadAction<IProduct>) => {
@@ -27,9 +28,22 @@ export const cartSlice = createSlice({
           );
         }
       }
+      localStorage.setItem(Storage.CART, JSON.stringify(state));
+      return state;
+    },
+    deleteCartItem: (state, { payload }: PayloadAction<IProduct>) => {
+      state.cartItems = state.cartItems.filter(
+        (item) => item.id !== payload.id
+      );
+      localStorage.setItem(Storage.CART, JSON.stringify(state));
+      return state;
+    },
+    initializeCart: (state, { payload }: PayloadAction<ICartItem[]>) => {
+      state.cartItems = payload;
       return state;
     },
   },
 });
 
-export const { addCartItem, removeCartItem } = cartSlice.actions;
+export const { addCartItem, removeCartItem, deleteCartItem, initializeCart } =
+  cartSlice.actions;
