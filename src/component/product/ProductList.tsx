@@ -2,7 +2,7 @@
 import { useGetProductsQuery } from "@/lib";
 import { useMedia } from "@/utils";
 import { Box, Button } from "@mui/material";
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import { ProductCard } from ".";
 import { Loader } from "./Loader";
 
@@ -10,7 +10,7 @@ export const ProductList: FC<{ hideLoadMore?: boolean }> = ({
   hideLoadMore,
 }) => {
   const { isMobile } = useMedia();
-  const limit = isMobile ? 5 : 10;
+  const limit = useMemo(() => (isMobile ? 5 : 10), [isMobile]);
   const [page, setPage] = useState(0);
   const [products, setProducts] = useState<IProduct[]>([]);
   const { data: productList, isLoading } = useGetProductsQuery({

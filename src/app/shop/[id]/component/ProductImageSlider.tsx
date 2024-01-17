@@ -18,6 +18,7 @@ export const ProductImageSlider: FC<{ images: string[] }> = ({ images }) => {
             ? [
                 ...acc,
                 <OtherImage
+                  key={index}
                   onClick={() => setSelectedIndex(index)}
                   src={current}
                 />,
