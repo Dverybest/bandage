@@ -3,8 +3,8 @@ import { useGetProductsQuery } from "@/lib";
 import { useMedia } from "@/utils";
 import { Box, Button } from "@mui/material";
 import { FC, useEffect, useMemo, useState } from "react";
-import { ProductCard } from ".";
 import { Loader } from "./Loader";
+import { ProductCard } from "./ProductCard";
 
 export const ProductList: FC<{ hideLoadMore?: boolean }> = ({
   hideLoadMore,
@@ -39,7 +39,7 @@ export const ProductList: FC<{ hideLoadMore?: boolean }> = ({
         rowGap={"15px"}
       >
         {products.map((product) => (
-          <ProductCard key={product.id} {...product} />
+          <ProductCard key={product.id + product.title} {...product} />
         ))}
         {isLoading &&
           Array.from({ length: 4 }, (_, index) => <Loader key={index} />)}

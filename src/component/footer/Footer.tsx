@@ -1,8 +1,10 @@
+"use client";
 import { Box, Container, Grid, Typography } from "@mui/material";
+import { FC } from "react";
 import { FaFacebook, FaInstagram, FaTwitter } from "react-icons/fa";
 import { Subscribe } from "./Subscribe";
 
-export const Footer = () => {
+export const Footer: FC = () => {
   return (
     <Box component={"footer"}>
       <Container>

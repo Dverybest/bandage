@@ -1,6 +1,6 @@
 "use client";
-import { Box, Button, styled } from "@mui/material";
-
+import { Box, Button } from "@mui/material";
+import { styled } from "@mui/material/styles";
 export const Subscribe = () => {
   return (
     <Container>
