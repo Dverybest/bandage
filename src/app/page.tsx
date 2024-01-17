@@ -5,18 +5,10 @@ import {
   card_cover_4,
 } from "@/assets";
 import { BannerItemCard, ProductList } from "@/component";
-import { fetcher } from "@/utils";
 import { Box, Container, Typography } from "@mui/material";
 import { SectionHeaderText } from "./home";
 
 export default async function Home() {
-  const res = await fetcher<IGetProductListResponse>({
-    url: "/products",
-    method: "GET",
-    params: { limit: 10 },
-  });
-  res.products;
-
   return (
     <main>
       <Container>
