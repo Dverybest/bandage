@@ -23,7 +23,15 @@ export function ProductList({ hideLoadMore }: { hideLoadMore?: boolean }) {
   };
   useEffect(() => {
     if (data) {
-      setProducts((products) => [...products, ...data.products]);
+      setProducts((products) => {
+        const res = [...products, ...data.products].reduce<
+          Record<string, IProduct>
+        >((acc, current) => {
+          acc[current.id] = current;
+          return acc;
+        }, {});
+        return Object.values(res);
+      });
     }
   }, [data]);
   return (
