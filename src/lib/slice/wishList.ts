@@ -1,4 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { Storage } from "../enum";
 
 const initialState: {
   list: Array<IProduct>;
@@ -14,9 +15,14 @@ export const wishListSlice = createSlice({
       } else {
         state.list = state.list.filter((item) => item.id !== payload.id);
       }
+      localStorage.setItem(Storage.WISHLIST, JSON.stringify(state));
+      return state;
+    },
+    initializeList: (state, { payload }: PayloadAction<IProduct[]>) => {
+      state.list = payload;
       return state;
     },
   },
 });
 
-export const { addListItem } = wishListSlice.actions;
+export const { addListItem, initializeList } = wishListSlice.actions;

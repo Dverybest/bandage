@@ -3,7 +3,6 @@ import { addCartItem, deleteCartItem, removeCartItem } from "@/lib/slice";
 import {
   Avatar,
   Box,
-  Button,
   Divider,
   IconButton,
   List,
@@ -36,16 +35,29 @@ export const Cart: FC<{ setShow: (show: boolean) => void }> = ({ setShow }) => {
   };
   return (
     <Box
-      sx={{ width: "60vw", padding: 2 }}
+      sx={{ width: { xs: 300, md: "60vw" }, padding: 2 }}
       role="presentation"
       onKeyDown={() => setShow(false)}
     >
       <IconButton onClick={() => setShow(false)}>
         <IoMdCloseCircleOutline />
       </IconButton>
+      <Typography variant="h3">Cart</Typography>
       <List sx={{ width: "100%", bgcolor: "background.paper" }}>
         {cartItems.map((item) => (
-          <ListItem key={item.title + item.id}>
+          <ListItem
+            key={item.title + item.id}
+            secondaryAction={
+              <IconButton
+                edge="end"
+                aria-label="delete"
+                onClick={() => onRemoveFromCartClick(item)}
+                color={"error"}
+              >
+                <MdDeleteOutline />
+              </IconButton>
+            }
+          >
             <ListItemAvatar sx={{ mr: 3 }}>
               <Avatar
                 alt={item.title}
@@ -58,25 +70,15 @@ export const Cart: FC<{ setShow: (show: boolean) => void }> = ({ setShow }) => {
               primary={item.title}
               secondary={
                 <Box>
-                  <Typography>
-                    Quantity:{" "}
-                    <IconButton onClick={() => onReduceFromCartClick(item)}>
+                  <Typography variant="body1">Quantity: </Typography>
+                  <Box display={"flex"} alignItems={"center"}>
+                    <IconButton onClick={() => onRemoveFromCartClick(item)}>
                       <MdOutlineRemoveCircleOutline />
                     </IconButton>
                     {` ${item.quantity} `}
                     <IconButton onClick={() => onAddToCartClick(item)}>
                       <IoMdAddCircleOutline />
                     </IconButton>
-                  </Typography>
-                  <Box>
-                    <Button
-                      variant={"outlined"}
-                      onClick={() => onRemoveFromCartClick(item)}
-                      startIcon={<MdDeleteOutline />}
-                      color={"error"}
-                    >
-                      Delete
-                    </Button>
                   </Box>
                 </Box>
               }

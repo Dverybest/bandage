@@ -15,11 +15,13 @@ import { GrFavorite } from "react-icons/gr";
 import { HiMenuAlt3 } from "react-icons/hi";
 import { MdOutlinePerson } from "react-icons/md";
 import { Cart } from "./Cart";
+import { WishList } from "./WishList";
 
 export const NavbarTop = () => {
   const { cartItems } = useAppSelector((state) => state.cart);
   const { list } = useAppSelector((state) => state.wishList);
   const [showCart, setShowCart] = useState(false);
+  const [showWishList, setShowWishList] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const totalItemInCart = cartItems.reduce<number>(
     (acc, current) => acc + current.quantity,
@@ -33,7 +35,16 @@ export const NavbarTop = () => {
     { name: "Contact", href: "/#" },
     { name: "Pages", href: "/#" },
   ];
-
+  const onWishListClick = () => {
+    setShowMenu(false);
+    setShowCart(false);
+    setShowWishList(true);
+  };
+  const onCartClick = () => {
+    setShowMenu(false);
+    setShowCart(true);
+    setShowWishList(false);
+  };
   return (
     <>
       <Box
@@ -104,13 +115,13 @@ export const NavbarTop = () => {
               <FiSearch />
             </IconButton>
             <Box>
-              <IconButton onClick={() => setShowCart((prev) => !prev)}>
+              <IconButton onClick={onCartClick}>
                 <BsCart />
               </IconButton>
               {totalItemInCart}
             </Box>
             <Box>
-              <IconButton>
+              <IconButton onClick={onWishListClick}>
                 <GrFavorite />
               </IconButton>
               {list.length}
@@ -120,10 +131,11 @@ export const NavbarTop = () => {
       </Box>
       <Drawer
         anchor={"right"}
-        open={showCart}
+        open={showCart || showWishList}
         onClose={() => setShowCart(false)}
       >
         {showCart && <Cart setShow={setShowCart} />}
+        {showWishList && <WishList setShow={setShowWishList} />}
       </Drawer>
     </>
   );
