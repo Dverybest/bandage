@@ -8,6 +8,7 @@ import {
   Link,
   Typography,
 } from "@mui/material";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { BsCart } from "react-icons/bs";
 import { FiSearch } from "react-icons/fi";
@@ -18,6 +19,7 @@ import { Cart } from "./Cart";
 import { WishList } from "./WishList";
 
 export const NavbarTop = () => {
+  const router = useRouter();
   const { cartItems } = useAppSelector((state) => state.cart);
   const { list } = useAppSelector((state) => state.wishList);
   const [showCart, setShowCart] = useState(false);
@@ -41,9 +43,10 @@ export const NavbarTop = () => {
     setShowWishList(true);
   };
   const onCartClick = () => {
-    setShowMenu(false);
-    setShowCart(true);
-    setShowWishList(false);
+    // setShowMenu(false);
+    // setShowCart(true);
+    // setShowWishList(false);
+    router.push("/cart");
   };
   return (
     <>
