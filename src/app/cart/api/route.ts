@@ -4,12 +4,12 @@ import { ApiError, Tranzakt } from "tpp-node-sdk";
 
 export async function POST(request: Request) {
   const tranzakt = new Tranzakt(
-    "MHcCAQEEIDqzFOFfjtXk2tgJ+hsg2CRw32T2sO8tnIbsqCSgVgWHoAoGCCqGSM49AwEHoUQDQgAE7cSLTdwjxvtw4EJQQES5OPCcLrtvS5VJIMYAXnbBOZZVKSGtDONYm663OH6wyhS03FjQlmQrPdeZFYRkFZaKhA=="
+    "MHcCAQEEIM8IJHkS0CNdz9ZSRngCK7hIvvM+rcPN5qWXMyS7tTZroAoGCCqGSM49AwEHoUQDQgAEk69TkOdG4fvRtuM2+uuKa28cgdffnd9fNj5z9nXxPZW0kNBMoKAW6gI3a1S94W0A8/q/SJkXdESn7iIfu70yxw=="
   );
   try {
     const req: { amount: number } = await request.json();
     const res = await tranzakt.createInvoice({
-      collectionId: "592a6a8b-c044-40f6-afd9-ce671588bde1",
+      collectionId: "084ac03a-0c00-4c3c-8101-a45405467d1b",
       title: "Test Invoice",
       payerName: "John Doe",
       payerEmail: "john.doe@example.com",

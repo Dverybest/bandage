@@ -56,18 +56,17 @@ function WireInfo({
     console.log("====================================");
     console.log(e);
     console.log("====================================");
-    return;
-    // const res = (await checkout({ amount: totalSum })) as {
-    //   data: {
-    //     data: { id: string; paymentUrl: string };
-    //     message: string;
-    //     status: number;
-    //   };
-    // };
-    // console.log(res);
-    // if (res?.data) {
-    //   router.push(res.data.data.paymentUrl);
-    // }
+    const res = (await checkout({ amount: totalSum })) as {
+      data: {
+        data: { id: string; paymentUrl: string };
+        message: string;
+        status: number;
+      };
+    };
+    console.log(res);
+    if (res?.data) {
+      router.push(res.data.data.paymentUrl);
+    }
   };
   const [values, setValues] = useState({
     shipping: "Cat in the Hat",
