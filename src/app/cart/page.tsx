@@ -37,7 +37,7 @@ export default function Cart() {
     { totalItems: 0, subTotalSum: 0 }
   );
   const totalSum = deliveryCharges + subTotalSum;
-
+console.log(totalSum)
   return (
     <Box bgcolor={({ palette }) => palette.grey[100]}>
       {openCheckout && (

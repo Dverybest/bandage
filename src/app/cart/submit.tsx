@@ -58,12 +58,11 @@ function WireInfo({
     console.log("====================================");
     const res = (await checkout({ amount: totalSum })) as {
       data: {
-        data: { id: string; paymentUrl: string };
+        data: { id: 6; paymentUrl: string };
         message: string;
         status: number;
       };
     };
-    console.log(res);
     if (res?.data) {
       router.push(res.data.data.paymentUrl);
     }
