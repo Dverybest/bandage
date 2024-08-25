@@ -3,6 +3,7 @@ import { aws, hooli, piper_hat, redit, stripe, yft } from "@/assets";
 import { ProductList } from "@/component";
 import { useAppDispatch, useAppSelector, useGetProductByIdQuery } from "@/lib";
 import { addCartItem, addListItem } from "@/lib/slice";
+import { dollarToNaira } from "@/utils";
 import {
   Box,
   Breadcrumbs,
@@ -102,7 +103,7 @@ export default function ProductDetails({
               color={"text.primary"}
               variant="h3"
             >
-              ${product?.price ?? 0}
+              ₦{dollarToNaira(product?.price ?? 0)}
             </Typography>
             <Box display={"flex"}>
               <Typography color={"text.secondary"} variant="h6">

@@ -213,7 +213,7 @@ export default function Home() {
         <Typography variant="h2" color={"text.main"} maxWidth={571}>
           Problems trying to resolve the conflict between
         </Typography>
-        <Typography variant="h3">$16.48</Typography>
+        <Typography variant="h3">₦1,648</Typography>
         <Typography variant="body1" maxWidth={571} color={"text.secondary"}>
           Problems trying to resolve the conflict between the two major realms
           of Classical physics:

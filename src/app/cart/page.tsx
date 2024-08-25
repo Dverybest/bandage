@@ -1,6 +1,9 @@
 "use client";
+import { mastercard, paystack, visa } from "@/assets";
 import { useAppDispatch, useAppSelector } from "@/lib";
 import { addCartItem, deleteCartItem, removeCartItem } from "@/lib/slice";
+import { dollarToNaira } from "@/utils";
+
 import {
   Avatar,
   Box,
@@ -13,35 +16,37 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Image from "next/image";
+import { useState } from "react";
 import { HiMiniChevronRight } from "react-icons/hi2";
-// import { FC } from "react";
-import { mastercard, paystack, visa } from "@/assets";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import { MdDeleteOutline, MdOutlineRemoveCircleOutline } from "react-icons/md";
+import WireInfo from "./submit";
 
-export default function Cartt() {
+export default function Cart() {
   const { cartItems } = useAppSelector((state) => state.cart);
-
-  console.log(cartItems);
-
-  const totalItems = cartItems.reduce<number>(
-    (acc, current) => acc + current.quantity,
-    0
+  const [openCheckout, setOpenCheckout] = useState(false);
+  const deliveryCharges = 1500;
+  const { totalItems, subTotalSum } = cartItems.reduce(
+    (acc, current) => {
+      return {
+        subTotalSum:
+          acc.subTotalSum + current.quantity * dollarToNaira(current.price),
+        totalItems: acc.totalItems + current.quantity,
+      };
+    },
+    { totalItems: 0, subTotalSum: 0 }
   );
-
-  const subTotalSum = cartItems.reduce<number>(
-    (acc, current) => acc + current.quantity * current.price,
-    0
-  );
-
-  const totalSum = cartItems.reduce<number>(
-    (acc, current) =>
-      acc + current.quantity * current.price - current.discountPercentage,
-    0
-  );
-
+  const totalSum = deliveryCharges + subTotalSum;
+console.log(totalSum)
   return (
     <Box bgcolor={({ palette }) => palette.grey[100]}>
+      {openCheckout && (
+        <WireInfo
+          open={openCheckout}
+          totalSum={totalSum}
+          onClose={() => setOpenCheckout(false)}
+        />
+      )}
       <Container>
         <Box
           py={3}
@@ -137,12 +142,12 @@ export default function Cartt() {
                   Delivery Charges
                 </Typography>
                 <Typography
-                  color={"red"}
+                  // color={"red"}
                   fontWeight={400}
                   fontSize={"12px"}
                   textAlign={"right"}
                 >
-                  Add your delivery address to checkout to see delivery charges.
+                  ₦{deliveryCharges}
                 </Typography>
               </Box>
               <hr />
@@ -166,7 +171,7 @@ export default function Cartt() {
                   fontWeight={400}
                   fontSize={"12px"}
                 >
-                  {`$${subTotalSum}`}
+                  {`₦${subTotalSum}`}
                 </Typography>
               </Box>
               <hr />
@@ -191,7 +196,7 @@ export default function Cartt() {
                   fontWeight={700}
                   fontSize={"15px"}
                 >
-                  {`$${totalSum}`}
+                  {`₦ ${totalSum}`}
                 </Typography>
               </Box>
               <hr />
@@ -210,12 +215,15 @@ export default function Cartt() {
                   fontSize={"12px"}
                   textAlign={"right"}
                 >
-                  Excluding Delivery Charges
+                  {/* Excluding Delivery Charges */}
                 </Typography>
               </Box>
             </Box>
             <NewContainer>
-              <CustomButton variant="contained">
+              <CustomButton
+                variant="contained"
+                onClick={() => setOpenCheckout(true)}
+              >
                 Proceed To Checkout
               </CustomButton>
             </NewContainer>
@@ -313,10 +321,14 @@ export function CartItem({ item }: { item: ICartItem }) {
           </IconButton>
         </Box>
         <Box display={"flex"} flexDirection={"column"}>
-          <Typography>{`$${item.price * item.quantity}`}</Typography>
-          <Typography fontSize={"9px"} fontWeight={300}>{`$${item.price} x ${
-            item.quantity
-          } ${item.quantity === 1 ? "item" : "items"}`}</Typography>
+          <Typography>{`₦${dollarToNaira(
+            item.price * item.quantity
+          )}`}</Typography>
+          <Typography fontSize={"9px"} fontWeight={300}>{`₦${dollarToNaira(
+            item.price
+          )} x ${item.quantity} ${
+            item.quantity === 1 ? "item" : "items"
+          }`}</Typography>
         </Box>
       </Box>
       <IconButton

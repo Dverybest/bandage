@@ -1,4 +1,5 @@
 "use client";
+import { dollarToNaira } from "@/utils";
 import { Box, Typography, styled } from "@mui/material";
 import Link from "next/link";
 import { FC } from "react";
@@ -26,13 +27,13 @@ export const ProductCard: FC<IProduct> = ({
       </Typography>
       <Box display={"flex"} columnGap={"5px"}>
         <Typography variant="h5" color={({ palette }) => palette.text.disabled}>
-          ${price}
+          ₦{dollarToNaira(price)}
         </Typography>
         <Typography
           variant="h5"
           color={({ palette }) => palette.secondary.main}
         >
-          ${Number(price - discountPercentage).toFixed(2)}
+          ₦{dollarToNaira(Number(price - discountPercentage)).toFixed(2)}
         </Typography>
       </Box>
     </Container>

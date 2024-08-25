@@ -18,18 +18,6 @@ const theme = createTheme({
       100: "#FAFAFA",
       200: "#ECECEC",
     },
-    background: {
-      default: "f9f9f9",
-    },
-    text: {
-      primary: "#252B42",
-      secondary: "#737373",
-      disabled: "#BDBDBD",
-    },
-    common: {
-      white: "#FFFFFF",
-      black: "#252B42",
-    },
   },
   typography: {
     fontFamily: "Montserrat",
