@@ -53,19 +53,14 @@ function WireInfo({
   const router = useRouter();
   const onPayButtonClick = async (e: any) => {
     e.preventDefault();
-    console.log("====================================");
-    console.log(e);
-    console.log("====================================");
-    const res = (await checkout({ amount: totalSum })) as {
-      data: {
-        data: { id: 6; paymentUrl: string };
-        message: string;
-        status: number;
-      };
-    };
-    if (res?.data) {
-      router.push(res.data.data.paymentUrl);
-    }
+    checkout({ amount: totalSum })
+      .unwrap()
+      .then((res) => {
+        if (res?.data) {
+          router.push(res.data.paymentUrl);
+        }
+      })
+      .catch(() => {});
   };
   const [values, setValues] = useState({
     shipping: "Cat in the Hat",
