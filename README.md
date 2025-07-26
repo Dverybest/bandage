@@ -1,8 +1,13 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Bandage E Shop App
 
 ## Getting Started
 
-First, run the development server:
+First, create an env file in the root folder and add the following variables and their values
+
+- COLLECTION_ID=
+- TRANZAKT_PUBLIC_KEY=
+
+Then run the development server:
 
 ```bash
 npm run dev
@@ -24,6 +29,7 @@ Th tech stack used in the product:
 - Next
 - MUI
 - Redux toolKit
+- Tranzakt Payment Gateway
 
 ## Deploy on Vercel
 

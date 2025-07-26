@@ -1,4 +1,4 @@
-import { useCheckoutMutation } from "@/lib";
+import { CoLLECTION_ID, TRANZAKT_PUBLIC_KEY } from "@/config";
 import styled from "@emotion/styled";
 import { Close, LocationOn, Person } from "@mui/icons-material";
 import {
@@ -14,8 +14,9 @@ import {
   Typography,
 } from "@mui/material";
 import { grey, teal } from "@mui/material/colors";
-import { useRouter } from "next/navigation";
+import { useSnackbar } from "notistack";
 import { useState } from "react";
+import { Tranzakt } from "tranzakt-react-sdk";
 
 const StyledDialog = styled(Dialog)(({}) => ({
   "& .MuiDialogContent-root": {
@@ -40,6 +41,7 @@ const SecondaryContainer = styled(Grid)(({ theme }) => ({
 
 const countries = [{ value: "Nigeria", label: "Nigeria" }];
 
+const tranzakt = new Tranzakt(TRANZAKT_PUBLIC_KEY!);
 function WireInfo({
   open,
   onClose,
@@ -49,27 +51,43 @@ function WireInfo({
   onClose: (value: boolean) => void;
   totalSum: number;
 }) {
-  const [checkout, { isLoading }] = useCheckoutMutation();
-  const router = useRouter();
-  const onPayButtonClick = async (e: any) => {
-    e.preventDefault();
-    checkout({ amount: totalSum })
-      .unwrap()
-      .then((res) => {
-        if (res?.data) {
-          router.push(res.data.paymentUrl);
-        }
-      })
-      .catch(() => {});
-  };
+  const [isLoading, setIsLoading] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
   const [values, setValues] = useState({
-    shipping: "Cat in the Hat",
     country: "",
     city: "",
     state: "",
     postalCode: "",
     address: "",
+    fullName: "",
+    email: "",
+    phone: "",
   });
+  const onPayButtonClick = async (e: any) => {
+    e.preventDefault();
+    setIsLoading(true);
+    tranzakt
+      .createInvoice({
+        collectionId: CoLLECTION_ID!,
+        payerEmail: values.email,
+        payerName: values.fullName,
+        payerPhoneNumber: values.phone,
+        title: "Checkout Invoice",
+        amount: totalSum,
+        callBackUrl: window.location.href,
+        billerMetaData: values,
+      })
+      .then((response) => {
+        const invoice = response.data;
+        console.log(`Payment URL: ${invoice.paymentUrl}`);
+        window.location.href = invoice.paymentUrl;
+        return;
+      })
+      .catch((e) => {
+        setIsLoading(false);
+        enqueueSnackbar(e.message, { variant: "error" });
+      });
+  };
 
   return (
     <StyledDialog
@@ -106,6 +124,9 @@ function WireInfo({
                   variant="outlined"
                   label="Full Name"
                   id="name"
+                  onChange={(e) =>
+                    setValues((prev) => ({ ...prev, fullName: e.target.value }))
+                  }
                 />
               </Grid>
               <Grid item xs={122}>
@@ -116,6 +137,9 @@ function WireInfo({
                   type={"email"}
                   label="Email Address"
                   id="email"
+                  onChange={(e) =>
+                    setValues((prev) => ({ ...prev, email: e.target.value }))
+                  }
                 />
               </Grid>
               <Grid item xs={12}>
@@ -125,6 +149,9 @@ function WireInfo({
                   variant="outlined"
                   label="Phone Number"
                   id="phone"
+                  onChange={(e) =>
+                    setValues((prev) => ({ ...prev, phone: e.target.value }))
+                  }
                 />
               </Grid>
               <Grid item xs={12}>
@@ -139,6 +166,12 @@ function WireInfo({
                       variant="outlined"
                       label="City"
                       id="city"
+                      onChange={(e) =>
+                        setValues((prev) => ({
+                          ...prev,
+                          city: e.target.value,
+                        }))
+                      }
                     />
                   </Grid>
                   <Grid item xs={6}>
@@ -147,6 +180,12 @@ function WireInfo({
                       variant="outlined"
                       label="Postal Code"
                       id="postal-code"
+                      onChange={(e) =>
+                        setValues((prev) => ({
+                          ...prev,
+                          postalCode: e.target.value,
+                        }))
+                      }
                     />
                   </Grid>
                 </Grid>
@@ -158,6 +197,12 @@ function WireInfo({
                   variant="outlined"
                   label="State/Province"
                   id="state-province"
+                  onChange={(e) =>
+                    setValues((prev) => ({
+                      ...prev,
+                      state: e.target.value,
+                    }))
+                  }
                 />
               </Grid>
               <Grid item xs={12}>
@@ -167,6 +212,12 @@ function WireInfo({
                   variant="outlined"
                   label="Street Address"
                   id="address"
+                  onChange={(e) =>
+                    setValues((prev) => ({
+                      ...prev,
+                      address: e.target.value,
+                    }))
+                  }
                 />
               </Grid>
               <Grid item xs={12}>
