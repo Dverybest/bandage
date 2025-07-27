@@ -66,27 +66,26 @@ function WireInfo({
   const onPayButtonClick = async (e: any) => {
     e.preventDefault();
     setIsLoading(true);
-    tranzakt
-      .createInvoice({
-        collectionId: CoLLECTION_ID!,
-        payerEmail: values.email,
-        payerName: values.fullName,
-        payerPhoneNumber: values.phone,
-        title: "Checkout Invoice",
-        amount: totalSum,
-        callBackUrl: window.location.href,
-        billerMetaData: values,
-      })
-      .then((response) => {
-        const invoice = response.data;
-        console.log(`Payment URL: ${invoice.paymentUrl}`);
-        window.location.href = invoice.paymentUrl;
-        return;
-      })
-      .catch((e) => {
-        setIsLoading(false);
-        enqueueSnackbar(e.message, { variant: "error" });
-      });
+    const response = await tranzakt.createInvoice({
+      collectionId: CoLLECTION_ID!,
+      payerEmail: values.email,
+      payerName: values.fullName,
+      payerPhoneNumber: values.phone,
+      title: "Checkout Invoice",
+      amount: totalSum,
+      callBackUrl: window.location.href,
+      billerMetaData: values,
+    });
+
+    if (response.success) {
+      const invoice = response.data;
+      // console.log(`Payment URL: ${invoice.paymentUrl} `, response);
+      window.location.href = invoice.paymentUrl;
+      return;
+    }
+
+    setIsLoading(false);
+    enqueueSnackbar(response.message, { variant: "error" });
   };
 
   return (
@@ -289,8 +288,8 @@ function WireInfo({
                   </Grid>
                   <Grid item xs={10}>
                     <Typography color={grey[700]} textTransform={"uppercase"}>
-                      Lifestyle and Golf Estate
-                      <strong>Enugu,Nigeria</strong>
+                      {"Lifestyle and Golf Estate "}
+                      <strong>Enugu, Nigeria</strong>
                     </Typography>
                   </Grid>
                 </Grid>
